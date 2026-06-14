@@ -2,21 +2,21 @@
     "name": "生活管家",
     "short_name": "生活管家",
     "description": "简洁的生活管理应用，包含记账和减肥计划功能",
-    "start_url": "/life-manager/index.html",
+    "start_url": ".",
     "display": "standalone",
     "background_color": "#1a1a2e",
     "theme_color": "#1a1a2e",
     "orientation": "portrait",
     "icons": [
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a1a2e' width='512' height='512' rx='80'/><text x='256' y='320' font-size='280' text-anchor='middle' fill='%2300d9ff'>生</text></svg>",
-            "sizes": "512x512",
+            "src": "https://api.iconify.design/mdi/home.svg?color=%2300d9ff&bg=%231a1a2e",
+            "sizes": "192x192",
             "type": "image/svg+xml",
             "purpose": "any maskable"
         },
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192' rx='30'/><text x='96' y='130' font-size='110' text-anchor='middle' fill='%2300d9ff'>生</text></svg>",
-            "sizes": "192x192",
+            "src": "https://api.iconify.design/mdi/home.svg?color=%2300d9ff&bg=%231a1a2e",
+            "sizes": "512x512",
             "type": "image/svg+xml",
             "purpose": "any maskable"
         }
