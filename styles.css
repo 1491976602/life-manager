@@ -1,0 +1,1528 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0f0f1a;
+    --bg-secondary: #1a1a2e;
+    --bg-card: #252542;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b0;
+    --accent-cyan: #00d9ff;
+    --accent-pink: #ff6b9d;
+    --accent-green: #00ff88;
+    --accent-orange: #ff9f43;
+    --accent-red: #ff4757;
+    --border-color: #3a3a5c;
+}
+
+body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+#app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 80px;
+}
+
+.app-header {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, #2d2d4a 100%);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+
+.date-display {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.tab-nav {
+    display: flex;
+    background: var(--bg-secondary);
+    padding: 0 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-btn .icon {
+    font-size: 18px;
+}
+
+.tab-btn.active {
+    color: var(--accent-cyan);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--accent-cyan);
+    border-radius: 3px 3px 0 0;
+}
+
+.content {
+    padding: 16px;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 预算卡片 */
+.budget-section {
+    margin-bottom: 16px;
+}
+
+.budget-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a48 100%);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+}
+
+.budget-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.budget-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-orange);
+}
+
+.budget-edit-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255, 159, 67, 0.15);
+    border: 1px solid var(--accent-orange);
+    color: var(--accent-orange);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.budget-edit-btn:hover {
+    background: var(--accent-orange);
+    color: var(--bg-primary);
+}
+
+/* 记账模块样式 */
+.month-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.summary-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+}
+
+.summary-card.income {
+    border-left: 3px solid var(--accent-green);
+}
+
+.summary-card.expense {
+    border-left: 3px solid var(--accent-red);
+}
+
+.summary-card.balance {
+    border-left: 3px solid var(--accent-cyan);
+}
+
+.summary-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.summary-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.summary-card.income .summary-value {
+    color: var(--accent-green);
+}
+
+.summary-card.expense .summary-value {
+    color: var(--accent-red);
+}
+
+.summary-card.balance .summary-value {
+    color: var(--accent-cyan);
+}
+
+.summary-card.balance.overdue .summary-value {
+    color: var(--accent-red);
+}
+
+/* 预算进度条 */
+.budget-progress {
+    margin-bottom: 16px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+.progress-fill.warning {
+    background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* 账本切换 */
+.book-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.book-tabs {
+    display: flex;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.book-tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.book-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+}
+
+.book-selector-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.current-book-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.book-name-edit-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.month-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.month-btn:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+    border-color: var(--accent-cyan);
+}
+
+#monthDisplay {
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+}
+
+.category-section,
+.record-section,
+.weight-records {
+    margin-bottom: 24px;
+}
+
+.category-section h3,
+.record-section h3,
+.weight-records h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.cat-tab {
+    padding: 8px 20px;
+    border-radius: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cat-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+    border-color: var(--accent-cyan);
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    min-height: 40px;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+}
+
+.category-item .delete-cat {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.add-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+
+.add-btn.primary {
+    background: linear-gradient(135deg, var(--accent-cyan), #00b4d8);
+    border: none;
+    color: var(--bg-primary);
+    font-weight: 600;
+}
+
+.add-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+}
+
+.record-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.record-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.record-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.record-icon.expense {
+    background: rgba(255, 71, 87, 0.15);
+}
+
+.record-icon.income {
+    background: rgba(0, 255, 136, 0.15);
+}
+
+.record-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.record-category {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.record-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.record-right {
+    text-align: right;
+}
+
+.record-amount {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.record-amount.expense {
+    color: var(--accent-red);
+}
+
+.record-amount.income {
+    color: var(--accent-green);
+}
+
+.record-date {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.3s ease;
+}
+
+.delete-btn:hover {
+    color: var(--accent-red);
+}
+
+/* 减肥模块样式 */
+.weight-goal {
+    margin-bottom: 20px;
+}
+
+.goal-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a48 100%);
+    border-radius: 20px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.goal-item {
+    text-align: center;
+}
+
+.goal-item.highlight .goal-value {
+    color: var(--accent-pink);
+    font-size: 20px;
+}
+
+.goal-item.bmi-item .goal-value {
+    color: var(--accent-cyan);
+}
+
+.goal-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.goal-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.weight-chart {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    height: 200px;
+}
+
+.weight-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.weight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.weight-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.weight-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weight-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.weight-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+.weight-change {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.weight-change.down {
+    background: rgba(255, 107, 157, 0.15);
+    color: var(--accent-pink);
+}
+
+.weight-change.up {
+    background: rgba(255, 71, 87, 0.15);
+    color: var(--accent-red);
+}
+
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 360px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: var(--accent-red);
+    color: white;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.btn-cancel:hover {
+    background: var(--border-color);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--accent-cyan), #00b4d8);
+    border: none;
+    color: var(--bg-primary);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+}
+
+/* 安装横幅 */
+.install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--bg-secondary), #2a2a48);
+    padding: 14px 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+.install-banner.show {
+    display: flex;
+}
+
+.install-banner span {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+#installBtn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    background: var(--accent-cyan);
+    border: none;
+    color: var(--bg-primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#dismissBanner {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 14px;
+}
+
+/* 响应式 */
+@media (max-width: 380px) {
+    .goal-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .goal-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+}
+
+/* 报表模块样式 */
+.report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.report-book-tabs {
+    display: flex;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.report-book-tab {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.report-book-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+}
+
+.year-month-tabs {
+    display: flex;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.ym-tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ym-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+}
+
+.report-date-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.report-date-selector span {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 80px;
+    text-align: center;
+}
+
+.filter-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.summary-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.overview-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.overview-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.overview-value {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.overview-value.expense {
+    color: var(--accent-red);
+}
+
+.overview-value.income {
+    color: var(--accent-green);
+}
+
+.overview-value.balance {
+    color: var(--accent-cyan);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chart-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.chart-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.daily-chart-section {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.daily-chart {
+    height: 180px;
+    margin-bottom: 12px;
+}
+
+.daily-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.daily-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.daily-tab {
+    padding: 8px 24px;
+    border-radius: 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.daily-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+    border-color: var(--accent-cyan);
+}
+
+.category-report-section {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.pie-chart-container {
+    height: 200px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pie-chart-container canvas {
+    width: 200px !important;
+    height: 200px !important;
+}
+
+.category-report-list {
+    margin-top: 16px;
+}
+
+.category-report-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+    gap: 12px;
+}
+
+.category-report-item:last-child {
+    border-bottom: none;
+}
+
+.cat-report-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-right: 12px;
+}
+
+.cat-report-info {
+    flex: 1;
+}
+
+.cat-report-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.cat-report-percent {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cat-report-bar {
+    height: 4px;
+    background: var(--bg-secondary);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.cat-report-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.cat-report-amount {
+    text-align: right;
+    min-width: 90px;
+}
+
+.cat-report-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cat-report-change {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.cat-report-change.up {
+    color: var(--accent-green);
+}
+
+.cat-report-change.down {
+    color: var(--accent-red);
+}
+
+.cat-report-compare {
+    text-align: right;
+    min-width: 90px;
+}
+
+.cat-report-compare-value {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* 年度报表样式 */
+.yearly-summary-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.yearly-overview-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.yearly-overview-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.yearly-overview-value {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.yearly-overview-value.expense {
+    color: var(--accent-red);
+}
+
+.yearly-overview-value.income {
+    color: var(--accent-green);
+}
+
+.yearly-overview-value.balance {
+    color: var(--accent-cyan);
+}
+
+.monthly-chart-section {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.monthly-chart {
+    height: 200px;
+    margin-bottom: 12px;
+}
+
+.monthly-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.monthly-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.monthly-tab {
+    padding: 8px 20px;
+    border-radius: 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.monthly-tab.active {
+    background: var(--accent-cyan);
+    color: var(--bg-primary);
+    border-color: var(--accent-cyan);
+}
+
+.monthly-report-table {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.monthly-report-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.monthly-report-table th,
+.monthly-report-table td {
+    padding: 10px 8px;
+    text-align: right;
+    font-size: 13px;
+}
+
+.monthly-report-table th {
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.monthly-report-table td:first-child {
+    text-align: left;
+    font-weight: 500;
+}
+
+.monthly-report-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.monthly-report-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.monthly-report-table tbody tr:last-child td {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.monthly-report-table .positive {
+    color: var(--accent-green);
+}
+
+.monthly-report-table .negative {
+    color: var(--accent-red);
+}
+
+/* 搜索模块样式 */
+.search-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--accent-cyan);
+}
+
+.search-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--accent-cyan);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.search-filters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.filter-group {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.filter-group label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+
+.search-amount-filter,
+.search-date-filter {
+    margin-bottom: 16px;
+}
+
+.amount-range,
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.amount-range input,
+.date-range input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    outline: none;
+}
+
+.range-separator {
+    color: var(--text-secondary);
+}
+
+.filter-reset-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.search-results {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#searchResultCount {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+#searchTotalAmount {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+
+.search-record-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-record-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-record-item:last-child {
+    border-bottom: none;
+}
+
+.search-record-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+.search-record-info {
+    flex: 1;
+}
+
+.search-record-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.search-record-category {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.search-record-type {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.search-record-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.search-record-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.search-record-amount {
+    text-align: right;
+}
+
+.search-record-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.search-record-value.expense {
+    color: var(--accent-red);
+}
+
+.search-record-value.income {
+    color: var(--accent-green);
+}

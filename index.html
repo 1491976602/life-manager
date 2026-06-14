@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>生活管家</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <h1>生活管家</h1>
+            <div class="date-display" id="currentDate"></div>
+        </header>
+
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="account">
+                <span class="icon">💰</span>
+                <span>记账</span>
+            </button>
+            <button class="tab-btn" data-tab="search">
+                <span class="icon">🔍</span>
+                <span>搜索</span>
+            </button>
+            <button class="tab-btn" data-tab="report">
+                <span class="icon">📊</span>
+                <span>报表</span>
+            </button>
+            <button class="tab-btn" data-tab="diet">
+                <span class="icon">⚖️</span>
+                <span>减肥</span>
+            </button>
+        </nav>
+
+        <main class="content">
+            <!-- 记账模块 -->
+            <section id="accountTab" class="tab-content active">
+                <div class="book-selector">
+                    <div class="book-tabs">
+                        <button class="book-tab active" data-book="1" onclick="switchBook(1)">账本1</button>
+                        <button class="book-tab" data-book="2" onclick="switchBook(2)">账本2</button>
+                        <button class="book-tab" data-book="3" onclick="switchBook(3)">账本3</button>
+                    </div>
+                    <div class="book-selector-right">
+                        <div class="current-book-name" id="currentBookName">账本1</div>
+                        <button class="book-name-edit-btn" onclick="showBookNameEditor()">✏️</button>
+                    </div>
+                </div>
+
+                <div class="budget-section">
+                    <div class="budget-card">
+                        <div class="budget-label">本月预算</div>
+                        <div class="budget-value" id="monthBudget">¥0.00</div>
+                        <button class="budget-edit-btn" id="editBudget">设置预算</button>
+                    </div>
+                </div>
+
+                <div class="month-summary">
+                    <div class="summary-card income">
+                        <div class="summary-label">本月收入</div>
+                        <div class="summary-value" id="monthIncome">¥0.00</div>
+                    </div>
+                    <div class="summary-card expense">
+                        <div class="summary-label">本月支出</div>
+                        <div class="summary-value" id="monthExpense">¥0.00</div>
+                    </div>
+                    <div class="summary-card balance">
+                        <div class="summary-label">剩余可用</div>
+                        <div class="summary-value" id="monthBalance">¥0.00</div>
+                    </div>
+                </div>
+
+                <div class="budget-progress" id="budgetProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">已花费 0%</div>
+                </div>
+
+                <div class="month-selector">
+                    <button class="month-btn" id="prevMonth">◀</button>
+                    <span id="monthDisplay"></span>
+                    <button class="month-btn" id="nextMonth">▶</button>
+                </div>
+
+                <div class="category-section">
+                    <h3>分类管理</h3>
+                    <div class="category-tabs">
+                        <button class="cat-tab active" data-type="expense">支出</button>
+                        <button class="cat-tab" data-type="income">收入</button>
+                    </div>
+                    <div class="category-list" id="categoryList"></div>
+                    <button class="add-btn" id="addCategory">+ 添加分类</button>
+                </div>
+
+                <div class="record-section">
+                    <h3>记账记录</h3>
+                    <button class="add-btn primary" id="addRecord">+ 添加记录</button>
+                    <div class="record-list" id="recordList"></div>
+                </div>
+            </section>
+
+            <!-- 搜索模块 -->
+            <section id="searchTab" class="tab-content">
+                <div class="search-header">
+                    <input type="text" id="searchKeyword" placeholder="搜索备注或标签..." class="search-input">
+                    <button class="search-btn" id="searchBtn">🔍</button>
+                </div>
+
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label>类型</label>
+                        <select id="searchType">
+                            <option value="all">全部</option>
+                            <option value="expense">支出</option>
+                            <option value="income">收入</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>分类</label>
+                        <select id="searchCategory">
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="search-amount-filter">
+                    <div class="filter-group">
+                        <label>金额范围</label>
+                        <div class="amount-range">
+                            <input type="number" id="minAmount" placeholder="最小金额" step="0.01" min="0">
+                            <span class="range-separator">-</span>
+                            <input type="number" id="maxAmount" placeholder="最大金额" step="0.01" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-date-filter">
+                    <div class="filter-group">
+                        <label>日期范围</label>
+                        <div class="date-range">
+                            <input type="date" id="startDate">
+                            <span class="range-separator">至</span>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="filter-reset-btn" id="resetFilter">重置筛选</button>
+
+                <div class="search-results">
+                    <div class="results-header">
+                        <span id="searchResultCount">共 0 条结果</span>
+                        <span id="searchTotalAmount">总计 ¥0.00</span>
+                    </div>
+                    <div class="search-record-list" id="searchRecordList"></div>
+                </div>
+            </section>
+
+            <!-- 报表模块 -->
+            <section id="reportTab" class="tab-content">
+                <div class="report-header">
+                    <div class="report-book-tabs">
+                        <button class="report-book-tab active" data-book="1" onclick="switchBookAndRefresh(1)">账本1</button>
+                        <button class="report-book-tab" data-book="2" onclick="switchBookAndRefresh(2)">账本2</button>
+                        <button class="report-book-tab" data-book="3" onclick="switchBookAndRefresh(3)">账本3</button>
+                    </div>
+                    <div class="year-month-tabs">
+                        <button class="ym-tab active" data-period="month">月</button>
+                        <button class="ym-tab" data-period="year">年</button>
+                    </div>
+                    <div class="report-date-selector">
+                        <button class="month-btn" id="reportPrevMonth">◀</button>
+                        <span id="reportMonthDisplay"></span>
+                        <button class="month-btn" id="reportNextMonth">▶</button>
+                    </div>
+                    <button class="filter-btn" id="reportFilter">🔍</button>
+                </div>
+
+                <!-- 月度报表视图 -->
+                <div id="monthlyView">
+                    <div class="summary-overview">
+                        <div class="overview-card">
+                            <div class="overview-label">支出</div>
+                            <div class="overview-value expense" id="reportExpense">¥0.00</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-label">收入</div>
+                            <div class="overview-value income" id="reportIncome">¥0.00</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-label">结余</div>
+                            <div class="overview-value balance" id="reportBalance">¥0.00</div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="overview-label">日均支出</div>
+                            <div class="overview-value" id="reportDailyAvg">¥0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="daily-chart-section">
+                        <div class="section-header">
+                            <h3>每日统计</h3>
+                            <div class="chart-actions">
+                                <button class="chart-action-btn">📊</button>
+                                <button class="chart-action-btn">↔</button>
+                            </div>
+                        </div>
+                        <div class="daily-chart">
+                            <canvas id="dailyChart"></canvas>
+                        </div>
+                        <div class="daily-tabs">
+                            <button class="daily-tab active" data-type="expense">支出</button>
+                            <button class="daily-tab" data-type="income">收入</button>
+                            <button class="daily-tab" data-type="all">全部</button>
+                        </div>
+                    </div>
+
+                    <div class="category-report-section">
+                        <div class="section-header">
+                            <h3>分类报表</h3>
+                        </div>
+                        <div class="pie-chart-container">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <div class="category-tabs">
+                            <button class="cat-tab active" data-type="expense">支出</button>
+                            <button class="cat-tab" data-type="income">收入</button>
+                        </div>
+                        <div class="category-report-list" id="categoryReportList"></div>
+                    </div>
+                </div>
+
+                <!-- 年度报表视图 -->
+                <div id="yearlyView" style="display: none;">
+                    <div class="yearly-summary-overview">
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">支出</div>
+                            <div class="yearly-overview-value expense" id="yearlyExpense">¥0.00</div>
+                        </div>
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">收入</div>
+                            <div class="yearly-overview-value income" id="yearlyIncome">¥0.00</div>
+                        </div>
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">结余</div>
+                            <div class="yearly-overview-value balance" id="yearlyBalance">¥0.00</div>
+                        </div>
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">月均支出</div>
+                            <div class="yearly-overview-value" id="yearlyAvgExpense">¥0.00</div>
+                        </div>
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">报销</div>
+                            <div class="yearly-overview-value" id="yearlyReimburse">¥0.00</div>
+                        </div>
+                        <div class="yearly-overview-card">
+                            <div class="yearly-overview-label">退款</div>
+                            <div class="yearly-overview-value" id="yearlyRefund">¥0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="monthly-chart-section">
+                        <div class="section-header">
+                            <h3>月度对比</h3>
+                            <div class="chart-actions">
+                                <button class="chart-action-btn">📊</button>
+                                <button class="chart-action-btn">↔</button>
+                            </div>
+                        </div>
+                        <div class="monthly-chart">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                        <div class="monthly-tabs">
+                            <button class="monthly-tab active" data-type="expense">支出</button>
+                            <button class="monthly-tab" data-type="income">收入</button>
+                            <button class="monthly-tab" data-type="balance">结余</button>
+                            <button class="monthly-tab" data-type="all">全部</button>
+                        </div>
+                    </div>
+
+                    <div class="category-report-section">
+                        <div class="section-header">
+                            <h3>分类报表</h3>
+                        </div>
+                        <div class="pie-chart-container">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <div class="category-tabs">
+                            <button class="cat-tab active" data-type="expense">支出</button>
+                            <button class="cat-tab" data-type="income">收入</button>
+                        </div>
+                        <div class="category-report-list" id="categoryReportList"></div>
+                    </div>
+
+                    <div class="monthly-report-table">
+                        <div class="section-header">
+                            <h3>月报表</h3>
+                        </div>
+                        <table id="monthlyReportTable">
+                            <thead>
+                                <tr>
+                                    <th>月份</th>
+                                    <th>收入</th>
+                                    <th>支出</th>
+                                    <th>结余</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthlyReportBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 减肥模块 -->
+            <section id="dietTab" class="tab-content">
+                <div class="weight-goal">
+                    <div class="goal-card">
+                        <div class="goal-item">
+                            <span class="goal-label">目标体重</span>
+                            <span class="goal-value" id="targetWeight">--</span>
+                        </div>
+                        <div class="goal-item">
+                            <span class="goal-label">当前体重</span>
+                            <span class="goal-value" id="currentWeight">--</span>
+                        </div>
+                        <div class="goal-item highlight">
+                            <span class="goal-label">还需减重</span>
+                            <span class="goal-value" id="remainingWeight">--</span>
+                        </div>
+                        <div class="goal-item bmi-item">
+                            <span class="goal-label">BMI指数</span>
+                            <span class="goal-value" id="currentBMI">--</span>
+                        </div>
+                        <div class="goal-item">
+                            <span class="goal-label">身高</span>
+                            <span class="goal-value">159cm</span>
+                        </div>
+                    </div>
+                    <button class="add-btn" id="setGoal">设置目标</button>
+                </div>
+
+                <div class="weight-chart">
+                    <canvas id="weightChart"></canvas>
+                </div>
+
+                <div class="weight-records">
+                    <h3>体重记录</h3>
+                    <button class="add-btn primary" id="addWeight">+ 记录体重</button>
+                    <div class="weight-list" id="weightList"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 模态框 -->
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">标题</h3>
+                    <button class="modal-close" id="modalClose">×</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+            </div>
+        </div>
+
+        <div class="install-banner" id="installBanner">
+            <span>安装应用到桌面</span>
+            <button id="installBtn">安装</button>
+            <button id="dismissBanner">×</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        }
+    </script>
+</body>
+</html>
